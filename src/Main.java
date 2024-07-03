@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.Scanner;
 import java.io.FileNotFoundException;
 
@@ -40,18 +41,13 @@ public class Main {
         String id = sc.next().toLowerCase();
         System.out.print("Enter student name: ");
         String name = sc.next();
-        Modules [] modules = new Modules [3];
-        System.out.print("Would you like to enter your modules (y/n): ");
-        String reply=sc.next().toLowerCase();
-        if (reply.equals("y")) {
-            for (int i=0;i<3;i++){
-                System.out.print("Enter module Name: ");
-                String moduleName = sc.next();
-                System.out.print("Enter module Marks: ");
-                int moduleMarks = sc.nextInt();
-                modules[i]=new Modules(moduleMarks,moduleName);
-            }
+        int [] module_marks=new int[3];
+        for (int i=0;i<3;i++){
+            System.out.print("Enter module "+(i+1)+" Marks: ");
+            module_marks [i] = sc.nextInt();
         }
+        Modules modules=new Modules(module_marks);
+
         students[studentCount] = new Student(id,name,modules);
         studentCount++;
         System.out.println("Student has been registered.");
@@ -86,18 +82,15 @@ public class Main {
                 if (students[i]!=null){
                     myWriter.write(students[i].getId()+" ");
                     myWriter.write(students[i].getName()+" ");
-                    Modules [] mods=students[i].getModule();
-                    for(int j=0; j<mods.length; j++){
-                        myWriter.write(mods[j].getName()+"-");
-                        if(j==2){
-                            myWriter.write(mods[j].getMarks()+"\n");
-                        }else {
-                            myWriter.write(mods[j].getMarks() + ",");
-                        }
+                    Modules mods=students[i].getModule();
+                    myWriter.write(mods.getModule_1()+",");
+                    myWriter.write(mods.getModule_2()+",");
+                    myWriter.write(mods.getModule_3() + "\n");
+
                     }
 
                 }
-            }
+
             myWriter.close();
             System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
@@ -114,15 +107,15 @@ public class Main {
                 String data = myReader.nextLine();
                 String [] dataarray=data.split(" ");
                 String [] moduledata=dataarray[2].split(",");
-                Modules [] module=new Modules [moduledata.length];
-                for(int j=0; j<moduledata.length; j++){
-                    String[] moduleWithMarks=moduledata[j].split("-");
-                    module[j]=new Modules(Integer.parseInt(moduleWithMarks[0]),moduleWithMarks[1]);
-
+                int [] moduleData=new int[3];
+                int c=0;
+                for(String i:moduledata){
+                    moduleData[c]=Integer.parseInt(i);
+                    c++;
                 }
+                Modules module=new Modules(moduleData);
                 students[studentCount]=new Student(dataarray[0],dataarray[1],module);
                 studentCount++;
-                System.out.println(data);
             }
             myReader.close();
         } catch (FileNotFoundException e) {
@@ -130,7 +123,9 @@ public class Main {
 
         }
     }
-    public static void viewStudent(){}
+    public static void viewStudent(){
+
+    }
 
 
 
@@ -158,7 +153,9 @@ public class Main {
                     loadStudent();
                     break;
                 case 7:
+                    System.out.println("Running");
                     viewStudent();
+                    System.out.println("Ended");
                     break;
                 default:
                     System.out.println("Please select a valid option.");

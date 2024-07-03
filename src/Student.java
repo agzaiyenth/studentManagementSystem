@@ -1,9 +1,9 @@
 public class Student {
     private String id;
     private String name;
-    private Modules [] module;
+    private Modules module;
 
-    public Student(String id, String name, Modules[] module) {
+    public Student(String id, String name, Modules module) {
         this.id = id;
         this.name = name;
         this.module = module;
@@ -25,11 +25,11 @@ public class Student {
         this.name = name;
     }
 
-    public Modules[] getModule() {
+    public Modules getModule() {
         return module;
     }
 
-    public void setModule(Modules[] module) {
+    public void setModule(Modules module) {
         this.module = module;
     }
 }
